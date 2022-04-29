@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Ribble Valley Jubilee Trail 2022</title>
+    <link rel="stylesheet" href="https://labs.os.uk/public/os-api-branding/v0.3.0/os-api-branding.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+    <link rel="stylesheet" href="css/leaflet-measure.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@2.3.0/Control.FullScreen.css">
+
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.7.0/proj4.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4leaflet/1.0.2/proj4leaflet.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@2.3.0/Control.FullScreen.js"></script>
+<script src="data/Ribble_Valley__District_Boundary_Outline_2.js"></script>
+<script src="data/Ribble_Valley_Jubilee_Trail_2022copy_3.js"></script>
+
+<script src="js/Autolinker.min.js"></script>
+<script src="js/leaflet-measure.js"></script>
+<script>
+
+    var apiKey = 'NAI9sZS6RxIdV4MpIdHfHR9lbQ9OPOwa';
+
+    var serviceUrl = 'https://api.os.uk/maps/raster/v1/zxy';
+
+// Setup the EPSG:27700 (British National Grid) projection.
+    var bngcrs = new L.Proj.CRS('EPSG:27700', '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 +units=m +no_defs', {
+        resolutions: [ 896.0, 448.0, 224.0, 112.0, 56.0, 28.0, 14.0, 7.0, 3.5, 1.75, 0.875, 0.4375, 0.21875, 0.109375 ],
+        origin: [ -238375.0, 1376256.0 ]
+    });
+
+// Transform coordinates.
+    var transformCoords = function(arr) {
+        return proj4('EPSG:27700', 'EPSG:4326', arr).reverse();
+    };
+
+// Initialize the map.
+    var mapOptions = {
+        crs: bngcrs,
+        center: transformCoords([ 374288,442016 ]),
+        zoom: 4,
+        minZoom: 3,
+        maxBounds: [
+            transformCoords([ 352289.0, 428245.0]),
+            transformCoords([ 392924.0, 461772.0 ])
+        ],
+        attributionControl: false,
+        fullscreenControl: true
+    };
+    //map.attributionControl.setPrefix('<a href="mailto:Andrew.Gilligan@ribblevalley.gov.uk" target="_blank">A.Gilligan</a>,<a href="https://www.ribblevalley.gov.uk/">Ribble Valley Borough Council</a>');
+//ATTRIBUTIONS
+
+    var map = L.map('map', mapOptions);
+
+    var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+
+    L.control.locate().addTo(map);
+
+    L.control.attribution({prefix:'<a href="https://leafletjs.com">Leaflet &vert; <a href="mailto:Andrew.Gilligan@ribblevalley.gov.uk" target="_blank">A.Gilligan</a> &middot; <a href="https://www.ribblevalley.gov.uk/">Ribble Valley Borough Council</a> &middot; <a href="Attribution/OSat.html" title="© Crown copyright [and database rights] 2022 OS 100018641. Use of this data is subject to terms and conditions. You are granted a non-exclusive, royalty free revocable licence solely to view the licensed data for non-commercial purposes for the period during which Ribble Valley Borough Council makes it available; You are not permitted to copy, sub-license, distribute, sell or otherwise make available the licensed data to third parties in any form; and Third party rights to enforce the terms of this licence shall be reserved to OS.">Contains OS data © Crown copyright and database right<a/>'}).addTo(map);
+// Watermark
+        L.Control.Watermark = L.Control.extend({
+        onAdd: function(map) {
+        var img = L.DomUtil.create('img');
+
+        img.src = "images/RVBC_Logo_C_50T.png";
+        img.style.width = '150px';  
+
+        return img;
+        }, 
+
+        onRemove: function(map) {
+        // Nothing to do here
+        }
+        });
+
+        L.control.watermark = function(opts) {
+        return new L.Control.Watermark(opts);
+        }
+
+        L.control.watermark({ position: 'bottomleft' }).addTo(map);
+
+// DATA LAYERS
+
+    var layer_jubilee_trail = new L.geoJSON(json_Ribble_Valley_Jubilee_Trail_2022copy_3, {      
+        onEachFeature: pop_Ribble_Valley_Jubilee_Trail_2022copy_3,
+        style: style_Ribble_Valley_Jubilee_Trail_2022copy_3_0,
+    }).addTo(map);  
+
+    var layer_rvbound = new L.geoJSON(json_Ribble_Valley__District_Boundary_Outline_2, {
+        style: style_RibbleValleyBoundary_0_0,
+    }).addTo(map);
+//RV BOUND STYLE
+        function style_RibbleValleyBoundary_0_0() {
+            return {
+                opacity: 1,
+                color: 'rgba(0,0,0,0.5)',
+                lineCap: 'round',
+                lineJoin: 'round',
+                weight: 3.0,
+                fillOpacity: 1,
+            }
+        }
+// TRAIL STYLE
+        function style_Ribble_Valley_Jubilee_Trail_2022copy_3_0(feature) {
+            switch(String(feature.properties['Section'])) {
+                case 'Whalley to Downham via Pendle Hill summit section 1':
+                    return {
+
+                opacity: 1,
+                color: 'rgba(51,230,23,1.0)',
+                dashArray: '9,12',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Downham to Bolton by Bowland section 2':
+                    return {
+
+                opacity: 1,
+                color: 'rgba(116,186,226,1.0)',
+                dashArray: '9,12',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Bolton by Bowland to Slaidburn section 3':
+                    return {
+
+                opacity: 1,
+                color: 'rgba(228,21,101,1.0)',
+                dashArray: '9,12',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Chipping to Hurst Green section 5':
+                    return {
+
+                opacity: 1,
+                color: 'rgba(212,59,235,1.0)',
+                dashArray: '9,12',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Hurst Green to Mellor section 6':
+                    return {
+
+                opacity: 1,
+                color: 'rgba(226,179,38,1.0)',
+                dashArray: '9,12',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Mellor to Whalley section 7':
+                    return {
+
+                opacity: 1,
+                color: 'rgba(103,210,158,1.0)',
+                dashArray: '9,12',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+                case 'Slaidburn to Chipping section 4':
+                    return {
+
+                opacity: 1,
+                color: 'rgba(150,138,238,1.0)',
+                dashArray: '9,12',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 6.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+                    break;
+            }
+        }
+//TRAIL Popup
+        function pop_Ribble_Valley_Jubilee_Trail_2022copy_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Section Name</th>\
+                        <td>' + (feature.properties['Section'] !== null ? autolinker.link(feature.properties['Section'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Section Number</th>\
+                        <td>' + (feature.properties['Section Number'] !== null ? autolinker.link(feature.properties['Section Number'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Length (miles)</th>\
+                        <td>' + (feature.properties['length (miles)'] !== null ? autolinker.link(feature.properties['length (miles)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Length (km)</th>\
+                        <td>' + (feature.properties['length (km)'] !== null ? autolinker.link(feature.properties['length (km)'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+// BASE MAPS
+    var osroad = L.tileLayer(serviceUrl + '/Road_27700/{z}/{x}/{y}.png?key='+ apiKey, {   
+            maxZoom: 22,
+            attribution: '<a>Contains OS data © Crown copyright and database right<a/>',
+        });
+
+    var osout = L.tileLayer(serviceUrl + '/Outdoor_27700/{z}/{x}/{y}.png?key='+ apiKey, {   
+            maxZoom: 22,
+        }).addTo(map);
+
+    var osleisure = L.tileLayer(serviceUrl + '/Leisure_27700/{z}/{x}/{y}.png?key='+ apiKey, {   
+            maxZoom: 9,
+        });
+
+//   
+    var baseMaps = { 
+        'OS Leisure' : osleisure,
+        'OS Road' : osroad,
+        'OS Outdoor' : osout
+    };
+    var measureControl = new L.Control.Measure({
+        position: 'topleft',
+        primaryLengthUnit: 'meters',
+        secondaryLengthUnit: 'kilometers',
+        primaryAreaUnit: 'sqmeters',
+        secondaryAreaUnit: 'hectares'
+    });
+    measureControl.addTo(map);
+
+    L.control.layers(baseMaps,{'Ribble Valley Jubilee Trail 2022<br /><table><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_WhalleytoDownhamviaPendleHillsummitSection10.png" /></td><td>Whalley to Downham via Pendle Hill summit - Section 1</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_DownhamtoBoltonbyBowlandSection21.png" /></td><td>Downham to Bolton by Bowland - Section 2</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_BoltonbyBowlandtoSlaidburnSection32.png" /></td><td>Bolton by Bowland to Slaidburn - Section 3</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_ChippingtoHurstGreenSection53.png" /></td><td>Chipping to Hurst Green - Section 5</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_HurstGreentoMellorSection64.png" /></td><td>Hurst Green to Mellor - Section 6</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_MellortoWhalleySection75.png" /></td><td>Mellor to Whalley - Section 7</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_SlaidburntoChippingSection46.png" /></td><td>Slaidburn to Chipping - Section 4</td></tr></table>': layer_jubilee_trail,'<img src="legend/Ribble_Valley__District_Boundary_Outline_2.png" /> Ribble Valley Boundary': layer_rvbound,}).addTo(map);
+
+</script>
+
+</body>
+</html>
