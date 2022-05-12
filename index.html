@@ -7,6 +7,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Ribble Valley Jubilee Trail 2022</title>
     <link rel="stylesheet" href="leaflet.css" />
+    <link rel="stylesheet" href="L.Control.Locate.css" />
 
     <style>
         body { margin:0; padding:0; }
@@ -20,6 +21,7 @@
 <script src="leaflet.js"></script>
 <script src="proj4.js"></script>
 <script src="proj4leaflet.min.js"></script>
+<script src="L.Control.Locate.min.js" charset="utf-8"></script>
 <script src="data/Ribble_Valley__District_Boundary_Outline_2.js"></script>
 <script src="data/Ribble_Valley_Jubilee_Trail_2022copy_3.js"></script>
 
@@ -44,6 +46,7 @@
 // Initialize the map.
     var mapOptions = {
         crs: bngcrs,
+        tap: false,
         center: transformCoords([ 374288,442016 ]),
         zoom: 4,
         minZoom: 3,
