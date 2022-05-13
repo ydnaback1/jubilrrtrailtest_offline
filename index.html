@@ -8,8 +8,6 @@
     <title>Ribble Valley Jubilee Trail 2022</title>
     <link rel="stylesheet" href="leaflet.css" />
     <link rel="stylesheet" href="L.Control.Locate.css" />
-    <link rel="stylesheet" href="leaflet-measure.css" />
-    <link rel="stylesheet" href="Control.FullScreen.css">
 
     <style>
         body { margin:0; padding:0; }
@@ -24,12 +22,11 @@
 <script src="proj4.js"></script>
 <script src="proj4leaflet.min.js"></script>
 <script src="L.Control.Locate.min.js" charset="utf-8"></script>
-<script src="Control.FullScreen.js"></script>
 <script src="data/Ribble_Valley__District_Boundary_Outline_2.js"></script>
 <script src="data/Ribble_Valley_Jubilee_Trail_2022copy_3.js"></script>
 
 <script src="Autolinker.min.js"></script>
-<script src="leaflet-measure.js"></script>
+
 <script>
 
     var apiKey = 'NAI9sZS6RxIdV4MpIdHfHR9lbQ9OPOwa';
@@ -59,17 +56,16 @@
             transformCoords([ 392924.0, 461772.0 ])
         ],
         attributionControl: false,
-        //fullscreenControl: true
     };
-    //map.attributionControl.setPrefix('<a href="mailto:Andrew.Gilligan@ribblevalley.gov.uk" target="_blank">A.Gilligan</a>,<a href="https://www.ribblevalley.gov.uk/">Ribble Valley Borough Council</a>');
-//ATTRIBUTIONS
 
     var map = L.map('map', mapOptions);
 
     var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
 
     L.control.locate().addTo(map);
-
+    
+//ATTRIBUTIONS
+    
     L.control.attribution({prefix:'<a href="https://leafletjs.com">Leaflet &vert; <a href="mailto:Andrew.Gilligan@ribblevalley.gov.uk" target="_blank">A.Gilligan</a> &middot; <a href="https://www.ribblevalley.gov.uk/">Ribble Valley Borough Council</a> &middot; <a href="Attribution/OSat.html" title="© Crown copyright [and database rights] 2022 OS 100018641. Use of this data is subject to terms and conditions. You are granted a non-exclusive, royalty free revocable licence solely to view the licensed data for non-commercial purposes for the period during which Ribble Valley Borough Council makes it available; You are not permitted to copy, sub-license, distribute, sell or otherwise make available the licensed data to third parties in any form; and Third party rights to enforce the terms of this licence shall be reserved to OS.">Contains OS data © Crown copyright and database right<a/>'}).addTo(map);
 // Watermark
         L.Control.Watermark = L.Control.extend({
@@ -253,14 +249,6 @@
         'OS Road' : osroad,
         'OS Outdoor' : osout
     };
-    var measureControl = new L.Control.Measure({
-        position: 'topleft',
-        primaryLengthUnit: 'meters',
-        secondaryLengthUnit: 'kilometers',
-        primaryAreaUnit: 'sqmeters',
-        secondaryAreaUnit: 'hectares'
-    });
-    measureControl.addTo(map);
 
     L.control.layers(baseMaps,{'Ribble Valley Jubilee Trail 2022<br /><table><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_WhalleytoDownhamviaPendleHillsummitSection10.png" /></td><td>Whalley to Downham via Pendle Hill summit - Section 1</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_DownhamtoBoltonbyBowlandSection21.png" /></td><td>Downham to Bolton by Bowland - Section 2</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_BoltonbyBowlandtoSlaidburnSection32.png" /></td><td>Bolton by Bowland to Slaidburn - Section 3</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_ChippingtoHurstGreenSection53.png" /></td><td>Chipping to Hurst Green - Section 5</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_HurstGreentoMellorSection64.png" /></td><td>Hurst Green to Mellor - Section 6</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_MellortoWhalleySection75.png" /></td><td>Mellor to Whalley - Section 7</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_SlaidburntoChippingSection46.png" /></td><td>Slaidburn to Chipping - Section 4</td></tr></table>': layer_jubilee_trail,'<img src="legend/Ribble_Valley__District_Boundary_Outline_2.png" /> Ribble Valley Boundary': layer_rvbound,}).addTo(map);
 
