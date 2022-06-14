@@ -48,13 +48,13 @@
     var mapOptions = {
         crs: bngcrs,
         tap: false,
-        center: transformCoords([ 374288,442016 ]),
+       center: transformCoords([ 374288,442016 ]),
         zoom: 4,
         minZoom: 3,
-        maxBounds: [
-            transformCoords([ 352289.0, 428245.0]),
-            transformCoords([ 392924.0, 461772.0 ])
-        ],
+    //    maxBounds: [
+    //        transformCoords([ 352289.0, 428245.0]),
+    //        transformCoords([ 392924.0, 461772.0 ])
+    //    ],
         attributionControl: false,
     };
 
@@ -73,7 +73,7 @@
         var img = L.DomUtil.create('img');
 
         img.src = "images/RVBC_Logo_C_50T.png";
-        img.style.width = '150px';  
+        img.style.width = '100px';  
 
         return img;
         }, 
@@ -99,6 +99,18 @@
     var layer_rvbound = new L.geoJSON(json_Ribble_Valley__District_Boundary_Outline_2, {
         style: style_RibbleValleyBoundary_0_0,
     }).addTo(map);
+
+    var img_offline_base = 'data/OS 25 wm comp.png';
+    var latLngBounds = L.latLngBounds([[53.7590794731634034,-2.5979486231288198],[54.0180133954652035,-2.2370533164863700]]);
+//    var img_bounds_offline_base = [[53.759079473163396,-2.5979486231288202],[54.01801339546523,-2.2370533164863815]];
+//    var img_bounds_offline_base = [[53.7590794731634034,-2.5979486231288198],[54.0180133954652035,-2.2370533164863700]];
+    var img_bounds_offline_base = L.bounds([360917.2441000000108033,429353.6516999999876134],[384469.2441000000108033,458025.6516999999876134]);
+//EDIT    var img_bounds_offline_base =[transformCoords([360467,429463]),transformCoords([384514,457925])];
+
+    var layer_offline_base = new L.Proj.imageOverlay(img_offline_base,img_bounds_offline_base);
+
+
+
 //RV BOUND STYLE
         function style_RibbleValleyBoundary_0_0() {
             return {
@@ -250,7 +262,7 @@
         'OS Outdoor' : osout
     };
 
-    L.control.layers(baseMaps,{'Ribble Valley Jubilee Trail 2022<br /><table><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_WhalleytoDownhamviaPendleHillsummitSection10.png" /></td><td>Whalley to Downham via Pendle Hill summit - Section 1</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_DownhamtoBoltonbyBowlandSection21.png" /></td><td>Downham to Bolton by Bowland - Section 2</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_BoltonbyBowlandtoSlaidburnSection32.png" /></td><td>Bolton by Bowland to Slaidburn - Section 3</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_ChippingtoHurstGreenSection53.png" /></td><td>Chipping to Hurst Green - Section 5</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_HurstGreentoMellorSection64.png" /></td><td>Hurst Green to Mellor - Section 6</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_MellortoWhalleySection75.png" /></td><td>Mellor to Whalley - Section 7</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_SlaidburntoChippingSection46.png" /></td><td>Slaidburn to Chipping - Section 4</td></tr></table>': layer_jubilee_trail,'<img src="legend/Ribble_Valley__District_Boundary_Outline_2.png" /> Ribble Valley Boundary': layer_rvbound,}).addTo(map);
+    L.control.layers(baseMaps,{'Ribble Valley Jubilee Trail 2022<br /><table><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_WhalleytoDownhamviaPendleHillsummitSection10.png" /></td><td>Whalley to Downham via Pendle Hill Summit - Section 1</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_DownhamtoBoltonbyBowlandSection21.png" /></td><td>Downham to Bolton by Bowland - Section 2</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_BoltonbyBowlandtoSlaidburnSection32.png" /></td><td>Bolton by Bowland to Slaidburn - Section 3</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_SlaidburntoChippingSection46.png" /></td><td>Slaidburn to Chipping - Section 4</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_ChippingtoHurstGreenSection53.png" /></td><td>Chipping to Hurst Green - Section 5</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_HurstGreentoMellorSection64.png" /></td><td>Hurst Green to Mellor - Section 6</td></tr><tr><td style="text-align: center;"><img src="legend/Ribble_Valley_Jubilee_Trail_2022copy_3_MellortoWhalleySection75.png" /></td><td>Mellor to Whalley - Section 7</td></tr></table>': layer_jubilee_trail,'<img src="legend/Ribble_Valley__District_Boundary_Outline_2.png" /> Ribble Valley Boundary': layer_rvbound,'OFFLINE BASEMAP': layer_offline_base,}).addTo(map);
 
 </script>
 
